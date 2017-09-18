@@ -11,6 +11,7 @@ void Wireless::initialize() {
   radio.setRetries(15, 15);
   radio.openReadingPipe(1, READ_PIPE);
   radio.openWritingPipe(WRITE_PIPE);
+  radio.startListening();
   delay(300);
 }
 

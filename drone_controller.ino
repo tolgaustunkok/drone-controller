@@ -18,7 +18,7 @@ void setup() {
   wireless.sendInfo("Wireless module initialized.");
 
   if (!sensors.initialize()) {
-    wireless.sendInfo("Barometric pressure sensor failed to initialize.");
+    wireless.sendInfo("Barometric pressure sensor (BMP280) failed to initialize.");
   } else {
     wireless.sendInfo("All sensors initialized.");
   }
@@ -27,6 +27,7 @@ void setup() {
   wireless.sendInfo("All motors initialized.");
 
   cmdInterpreter.initialize(wireless, motorManager, sensors);
+  wireless.sendInfo("Command interpreter initialized.");
 }
 
 void loop() {
