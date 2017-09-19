@@ -8,16 +8,18 @@ typedef struct {
   float x;
   float y;
   float z;
-} gyro_data_t;
+} sensor_data_t;
 
 class SensorArray {
-  private:
-    MPU9255 mpu;
-    Adafruit_BMP280 bme;
-  public:
-    bool initialize();
-    gyro_data_t getGyroDPS();
-    char* getStatus();
+private:
+  MPU9255 mpu;
+  Adafruit_BMP280 bme;
+  sensor_data_t currentAngle;
+public:
+  bool initialize();
+  char* getStatus();
+  void updatePositionData(float delta);
+  const sensor_data_t& getCurrentAngle();
 };
 
 #endif
