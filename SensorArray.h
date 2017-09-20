@@ -4,6 +4,8 @@
 #include <Adafruit_BMP280.h>
 #include <MPU9255.h>
 
+#define RAD2DEG 57.295779505601
+
 typedef struct {
   float x;
   float y;
@@ -17,9 +19,10 @@ private:
   sensor_data_t currentAngle;
 public:
   bool initialize();
-  char* getStatus();
   void updatePositionData(float delta);
   const sensor_data_t& getCurrentAngle();
+  float getAltitude(float currentPressure);
+  float getTemperature();
 };
 
 #endif

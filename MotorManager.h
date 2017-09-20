@@ -19,7 +19,7 @@ class MotorManager {
     void runMotors();
     void setMotor(MOTOR_E motor, int thrust);
     void setAllMotors(int thrust);
-    void getStatus();
+    const int* getThrusts();
 };
 
 #endif

@@ -1,17 +1,5 @@
-#include <Servo.h>
-
-void MotorManager::getStatus() {
-  Wireless w;
-  w.initialize();
-
-  for (int i = 0; i < 4; i++) {
-    char tmpBuffer[10];
-    w.sendInfo("Motor Thrust ");
-    sprintf(tmpBuffer, "%d: ", i + 1);
-    w.sendInfo(tmpBuffer);
-    sprintf(tmpBuffer, "%d", thrusts[i]);
-    w.sendInfo(tmpBuffer);
-  }
+const int* MotorManager::getThrusts() {
+  return thrusts;
 }
 
 void MotorManager::setAllMotors(int thrust) {
