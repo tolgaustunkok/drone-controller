@@ -1,10 +1,11 @@
 
-void Wireless::sendInfo(char* message) {
-  int len = strlen(message);
+void Wireless::pumpData() {
   radio.stopListening();
-  radio.write(message, len);
+  int len = strlen(data);
+  radio.write(data, len);
   radio.startListening();
-  delay(100);
+  memset(data, 0, 100);
+  index = 0;
 }
 
 void Wireless::initialize() {
@@ -18,11 +19,26 @@ void Wireless::initialize() {
   radio.openReadingPipe(1, READ_PIPE);
   radio.openWritingPipe(WRITE_PIPE);
   radio.startListening();
+  data = new char[100];
+  memset(data, 0, 100);
+  index = 0;
   delay(300);
 }
 
-void Wireless::getMessage(void* data, int sizeOfData) {
+void Wireless::getMessage(void* otherData, int sizeOfData) {
   if (radio.available()) {
-    radio.read(data, sizeOfData);
+    radio.read(otherData, sizeOfData);
   }
 }
+
+void Wireless::addData(char *otherData) {
+  int lengthOfData = strlen(otherData);
+  strcpy((data + index), otherData);
+  index += lengthOfData;
+  data[index++] = ',';
+}
+
+Wireless::~Wireless() {
+  delete[] data;
+}
+

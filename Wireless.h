@@ -11,11 +11,15 @@ class Wireless {
     RF24 radio;
     uint64_t READ_PIPE = 0xF0F0F0F0AALL;
     uint64_t WRITE_PIPE = 0xF0F0F0F0ABLL;
+    char *data;
+    int index;
   public:
     Wireless() : radio(9, 10) {}
+    ~Wireless();
     void initialize();
-    void sendInfo(char* message);
-    void getMessage(void* data, int sizeOfData);
+    void pumpData();
+    void addData(char *otherData);
+    void getMessage(void* otherData, int sizeOfData);
 };
 
 #endif

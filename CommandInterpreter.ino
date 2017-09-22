@@ -16,13 +16,15 @@ void CommandInterpreter::interpret() {
         float altitude = sensors.getAltitude(1013.90);
         float temperature = sensors.getTemperature();
         const int* motorThrusts = motorManager.getThrusts();
-        
-        wireless.sendInfo(("Altitude: " + String(altitude)).c_str());
-        wireless.sendInfo(("Temperature: " + String(temperature)).c_str());
-        wireless.sendInfo(("Motor CW Front: " + String(motorThrusts[CW_FRONT])).c_str());
-        wireless.sendInfo(("Motor CW Back: " + String(motorThrusts[CW_BACK])).c_str());
-        wireless.sendInfo(("Motor CCW Left: " + String(motorThrusts[CCW_LEFT])).c_str());
-        wireless.sendInfo(("Motor CCW Right: " + String(motorThrusts[CCW_RIGHT])).c_str());
+        const sensor_data_t inclination = sensors.getCurrentAngle();
+
+        wireless.addData(String(altitude).c_str());
+        wireless.addData(String(temperature).c_str());
+        wireless.addData(String(motorThrusts[CW_FRONT]).c_str());
+        wireless.addData(String(motorThrusts[CW_BACK]).c_str());
+        wireless.addData(String(motorThrusts[CCW_LEFT]).c_str());
+        wireless.addData(String(motorThrusts[CCW_RIGHT]).c_str());
+        wireless.addData(("[" + String(inclination.x) + "," + String(inclination.y) + "," + String(inclination.z) + "]").c_str());
       }
     } else if (numOfTokens == 2) {
       if (getValue(message, ' ', 0) == "THR") {
