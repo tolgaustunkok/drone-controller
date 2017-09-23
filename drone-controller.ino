@@ -10,6 +10,7 @@ MotorManager motorManager;
 CommandInterpreter cmdInterpreter;
 
 void setup() {
+  Serial.begin(9600);
   Wire.begin();
 
   wireless.initialize();
@@ -19,7 +20,7 @@ void setup() {
 
   motorManager.initialize(8, 7, 6, 5);
 
-  cmdInterpreter.initialize(wireless, motorManager, sensors);
+  cmdInterpreter.initialize(&wireless, &motorManager, &sensors);
 }
 
 float error = 0.0, prevError = 0.0;

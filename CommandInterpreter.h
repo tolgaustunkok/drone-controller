@@ -7,15 +7,15 @@
 
 class CommandInterpreter {
 private:
-  char message[50];
+  char message[32];
   int numOfTokens;
-  Wireless wireless;
-  MotorManager motorManager;
-  SensorArray sensors;
+  Wireless *wireless;
+  MotorManager *motorManager;
+  SensorArray *sensors;
   String getValue(String data, char separator, int index);
   int count(char* message, char delim);
 public:
-  void initialize(const Wireless& w, const MotorManager& m, const SensorArray& s);
+  void initialize(const Wireless* w, const MotorManager* m, const SensorArray* s);
   void interpret();
 };
 

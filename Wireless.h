@@ -11,7 +11,7 @@ class Wireless {
     RF24 radio;
     uint64_t READ_PIPE = 0xF0F0F0F0AALL;
     uint64_t WRITE_PIPE = 0xF0F0F0F0ABLL;
-    char *data;
+    char *data, *tmpData;
     int index;
   public:
     Wireless() : radio(9, 10) {}
