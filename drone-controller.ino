@@ -16,6 +16,7 @@ void setup() {
   wireless.initialize();
 
   if (!sensors.initialize()) {
+    Serial.println("Sensors are failed to initialize.");
   }
 
   motorManager.initialize(8, 7, 6, 5);
@@ -24,7 +25,7 @@ void setup() {
 }
 
 float error = 0.0, prevError = 0.0;
-float Kp = 0.0, Ki = 0.0, Kd = 0.0;
+float Kp = 1.3, Ki = 0.04, Kd = 15.0;
 unsigned long startTime;
 float delta = 0.0;
 
@@ -34,12 +35,14 @@ void loop() {
   sensors.updatePositionData(delta);
 
   // Error = Desired Value - Angle from IMU
-  error = 0 - sensors.getCurrentAngle().x;
+  error = 0 - sensors.getCurrentAngle().y;
   
   float pRoll = Kp * error * delta;
   float iRoll = Ki * (iRoll + error) * delta;
   float dRoll = Kd * (error - prevError) * delta;
   float pidRoll = pRoll + iRoll + dRoll;
+
+  wireless.addData(String(pidRoll).c_str());
   
   motorManager.runMotors();
 

@@ -17,6 +17,8 @@ private:
   MPU9255 mpu;
   Adafruit_BMP280 bme;
   sensor_data_t currentAngle;
+  sensor_data_t initialAngle;
+  bool initialRun = true;
 public:
   bool initialize();
   void updatePositionData(float delta);

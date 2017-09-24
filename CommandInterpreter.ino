@@ -8,18 +8,18 @@ void CommandInterpreter::initialize(const Wireless* w, const MotorManager* m, co
 void CommandInterpreter::interpret() {
   wireless->getMessage(message, sizeof(char) * 32);
 
-    float altitude = sensors->getAltitude(1013.90);
-    float temperature = sensors->getTemperature();
-    const int* motorThrusts = motorManager->getThrusts();
-    const sensor_data_t inclination = sensors->getCurrentAngle();
+  float altitude = sensors->getAltitude(1016.2);
+  float temperature = sensors->getTemperature();
+  const int* motorThrusts = motorManager->getThrusts();
+  const sensor_data_t inclination = sensors->getCurrentAngle();
 
-    wireless->addData((String(inclination.x) + "," + String(inclination.y) + "," + String(inclination.z)).c_str());
-    wireless->addData(String(altitude).c_str());
-    wireless->addData(String(temperature).c_str());
-    wireless->addData(String(motorThrusts[CW_FRONT]).c_str());
-    wireless->addData(String(motorThrusts[CW_BACK]).c_str());
-    wireless->addData(String(motorThrusts[CCW_LEFT]).c_str());
-    wireless->addData(String(motorThrusts[CCW_RIGHT]).c_str());
+  wireless->addData((String(inclination.x) + "," + String(inclination.y) + "," + String(inclination.z)).c_str());
+  wireless->addData(String(altitude).c_str());
+  wireless->addData(String(temperature).c_str());
+  wireless->addData(String(motorThrusts[CW_FRONT]).c_str());
+  wireless->addData(String(motorThrusts[CW_BACK]).c_str());
+  wireless->addData(String(motorThrusts[CCW_LEFT]).c_str());
+  wireless->addData(String(motorThrusts[CCW_RIGHT]).c_str());
 
   if (message[0] != 0) {
     numOfTokens = count(message, ' ');
