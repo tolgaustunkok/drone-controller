@@ -27,10 +27,6 @@ void CommandInterpreter::interpret() {
     if (numOfTokens == 1) {
       if (getValue(message, ' ', 0) == "STAT") {
         Serial.println("STAT command received.");
-        float altitude = sensors->getAltitude(1013.90);
-        float temperature = sensors->getTemperature();
-        const int* motorThrusts = motorManager->getThrusts();
-        const sensor_data_t inclination = sensors->getCurrentAngle();
 
         wireless->addData(("[" + String(inclination.x) + "," + String(inclination.y) + "," + String(inclination.z) + "]").c_str());
         wireless->addData(String(altitude).c_str());
