@@ -5,7 +5,11 @@ const int* MotorManager::getThrusts() {
 void MotorManager::setAllMotors(int thrust) {
   int resultantThrust = thrust + 1000;
 
-  if (resultantThrust >= 1000 && resultantThrust <= 1700) {
+  if (resultantThrust >= 1000 && resultantThrust <= 1500) {
+    for (int i = 0; i < 4; i++) {
+      thrusts[i] = resultantThrust;
+    }
+  } else if (resultantThrust >= 1500) {
     for (int i = 0; i < 4; i++) {
       thrusts[i] = resultantThrust;
     }
@@ -14,7 +18,14 @@ void MotorManager::setAllMotors(int thrust) {
 
 void MotorManager::setMotor(MOTOR_E motor, int thrust) {
   int resultantThrust = thrust + 1000;
-  if (resultantThrust >= 1000 && resultantThrust <= 1700) {
+  if (resultantThrust >= 1000 && resultantThrust <= 1400) {
+    thrusts[motor] = resultantThrust;
+  }
+}
+
+void MotorManager::addMotor(MOTOR_E motor, int thrust) {
+  int resultantThrust = thrust + thrusts[motor];
+  if (resultantThrust >= 1000 && resultantThrust <= 1400) {
     thrusts[motor] = resultantThrust;
   }
 }

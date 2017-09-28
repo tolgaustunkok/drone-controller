@@ -28,6 +28,8 @@ void CommandInterpreter::interpret() {
       if (getValue(message, ' ', 0) == "STAT") {
         Serial.println("STAT command received.");
 
+        Serial.println(String(altitude));
+
         wireless->addData(("[" + String(inclination.x) + "," + String(inclination.y) + "," + String(inclination.z) + "]").c_str());
         wireless->addData(String(altitude).c_str());
         wireless->addData(String(temperature).c_str());
@@ -36,6 +38,8 @@ void CommandInterpreter::interpret() {
         wireless->addData(String(motorThrusts[CCW_LEFT]).c_str());
         wireless->addData(String(motorThrusts[CCW_RIGHT]).c_str());
         Serial.println("end");
+      } else if (getValue(message, ' ', 0) == "EXT") {
+        motorManager->setAllMotors(0);
       }
     } else if (numOfTokens == 2) {
       if (getValue(message, ' ', 0) == "THR") {
