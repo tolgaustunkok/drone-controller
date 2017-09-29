@@ -5,6 +5,9 @@
 #include "CommandInterpreter.h"
 #include "PIDController.h"
 
+#define INIT_LED 4
+#define RUNNING_LED 3 
+
 Wireless wireless;
 SensorArray sensors;
 MotorManager motorManager;
@@ -14,6 +17,12 @@ PIDController pidControllerPitch;
 debug_data_t debugData;
 
 void setup() {
+  pinMode(INIT_LED, OUTPUT);
+  pinMode(RUNNING_LED, OUTPUT);
+
+  digitalWrite(RUNNING_LED, LOW);
+  digitalWrite(INIT_LED, HIGH);
+  
   Serial.begin(9600);
   Wire.begin();
 
@@ -30,13 +39,24 @@ void setup() {
 
   pidControllerRoll.initialize(1.3, 0.04, 15.0);
   pidControllerPitch.initialize(1.3, 0.04, 15.0);
+  
+  digitalWrite(INIT_LED, LOW);
 }
 
 unsigned long startTime;
 float delta = 0.0;
+float accum = 0.0;
 
 void loop() {
   startTime = millis();
+
+  if (accum <= 0.5) {
+    digitalWrite(RUNNING_LED, HIGH);
+  } else if (accum <= 1.0) {
+    digitalWrite(RUNNING_LED, LOW);
+  } else {
+    accum = 0.0;
+  }
   
   cmdInterpreter.interpret();
   sensors.updatePositionData(delta);
@@ -66,7 +86,8 @@ void loop() {
   motorManager.runMotors();
 
   wireless.pumpData(&debugData);
-  
+
+  accum += delta;
   delta = (millis() - startTime) / 1000.0;
 }
 
