@@ -75,8 +75,9 @@ void loop() {
   float pidPitch = pidControllerPitch.getPID() * delta;
   float pidRoll = pidControllerRoll.getPID() * delta;
 
-  debugData.pidRoll = pidRoll;
-  debugData.pidPitch = pidPitch;
+  //debugData.pidRoll = pidRoll;
+  //debugData.pidPitch = pidPitch;
+  debugData.delta = delta;
 
   for (int i = 0; i < 4; i++) {
     debugData.motorThrusts[i] = motorManager.getThrust(i);
@@ -89,9 +90,7 @@ void loop() {
   
   motorManager.runMotors();
 
-  Serial.println(String(debugData.altitude));
-
-  //wireless.pumpData(&debugData);
+  wireless.pumpData(&debugData);
 
   accum += delta;
   delta = (millis() - startTime) / 1000.0;

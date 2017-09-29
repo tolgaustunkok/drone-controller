@@ -2,8 +2,6 @@
 #define WIRELESS_H
 
 #include <RF24.h>
-#include <SPI.h>
-#include <nRF24L01.h>
 #include <RF24_config.h>
 #include "SensorArray.h"
 
@@ -12,8 +10,9 @@ typedef struct {
   float altitude;
   float temperature;
   int motorThrusts[4];
-  float pidRoll;
-  float pidPitch;
+  //float pidRoll;
+  //float pidPitch;
+  float delta;
 } debug_data_t;
 
 class Wireless {

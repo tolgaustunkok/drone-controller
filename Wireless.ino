@@ -9,8 +9,8 @@ void Wireless::pumpData(const debug_data_t* debugData) {
 void Wireless::initialize() {
   radio.begin();
   radio.setPALevel(RF24_PA_MAX);
-  //radio.setDataRate(RF24_250KBPS);
-  radio.setRetries(15, 15);
+  radio.setDataRate(RF24_250KBPS);
+  radio.setRetries(15, 15); // Reduce timout
   //radio.setAutoAck(0);
   radio.openReadingPipe(1, READ_PIPE);
   radio.openWritingPipe(WRITE_PIPE);
