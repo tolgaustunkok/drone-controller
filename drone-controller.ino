@@ -20,7 +20,7 @@ void setup() {
   wireless.initialize();
 
   if (!sensors.initialize()) {
-    Serial.println("Sensors are failed to initialize.");
+    Serial.println("Sensors are failed to initialize. Halted.");
     while (1);
   }
 
@@ -52,11 +52,10 @@ void loop() {
   float pidRoll = pidControllerRoll.getPID() * delta;
 
   const int* motorThrusts = motorManager.getThrusts();
-  
-  debugData.motorThrusts[CW_FRONT] = motorThrusts[CW_FRONT];
-  debugData.motorThrusts[CCW_RIGHT] = motorThrusts[CCW_RIGHT];
-  debugData.motorThrusts[CW_BACK] = motorThrusts[CW_BACK];
-  debugData.motorThrusts[CCW_LEFT] = motorThrusts[CCW_LEFT];
+
+  for (int i = 0; i < 4; i++) {
+    debugData.motorThrusts[i] = motorThrusts[i];
+  }
 
   motorManager.addMotor(CW_FRONT, -pidPitch - pidRoll);
   motorManager.addMotor(CCW_RIGHT, -pidPitch + pidRoll);
