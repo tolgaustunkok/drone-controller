@@ -3,11 +3,15 @@
 #include "SensorArray.h"
 #include "Wireless.h"
 #include "CommandInterpreter.h"
+#include "PIDController.h"
 
 Wireless wireless;
 SensorArray sensors;
 MotorManager motorManager;
 CommandInterpreter cmdInterpreter;
+PIDController pidControllerRoll;
+PIDController pidControllerPitch;
+debug_data_t debugData;
 
 void setup() {
   Serial.begin(9600);
@@ -23,43 +27,36 @@ void setup() {
   motorManager.initialize(8, 7, 6, 5);
 
   cmdInterpreter.initialize(&wireless, &motorManager, &sensors);
+
+  pidControllerRoll.initialize(1.3, 0.04, 15.0);
+  pidControllerPitch.initialize(1.3, 0.04, 15.0);
 }
-
-float errorX = 0.0, prevErrorX = 0.0;
-float errorY = 0.0, prevErrorY = 0.0;
-
-float xKp = 1.3, xKi = 0.04, xKd = 15.0;
-float yKp = 1.3, yKi = 0.04, yKd = 15.0;
 
 unsigned long startTime;
 float delta = 0.0;
 
-float pRoll, iRoll, dRoll, pidRoll;
-float pPitch, iPitch, dPitch, pidPitch;
-
 void loop() {
   startTime = millis();
+  
   cmdInterpreter.interpret();
   sensors.updatePositionData(delta);
 
-  // Error = Desired Value - Angle from IMU
-  errorX = 0 - sensors.getCurrentAngle().x;
-  errorY = 0 - sensors.getCurrentAngle().y;
-  
-  pRoll = xKp * errorX * delta;
-  iRoll = xKi * (iRoll + errorX) * delta;
-  dRoll = xKd * (errorX - prevErrorX) * delta;
-  pidRoll = pRoll + iRoll + dRoll;
+  debugData.sensorData = sensors.getCurrentAngle();
+  debugData.altitude = sensors.getAltitude(1014.5);
+  debugData.temperature = sensors.getTemperature();
 
-  pPitch = yKp * errorY * delta;
-  iPitch = yKi * (iPitch + errorY) * delta;
-  dPitch = yKd * (errorY - prevErrorY) * delta;
-  pidPitch = pPitch + iPitch + dPitch;
+  pidControllerPitch.calculatePID(0.0, sensors.getCurrentAngle().y);
+  pidControllerRoll.calculatePID(0.0, sensors.getCurrentAngle().x);
   
-  //wireless.addData(String(pidRoll).c_str());
-  //wireless.addData(String(pidPitch).c_str());
+  float pidPitch = pidControllerPitch.getPID() * delta;
+  float pidRoll = pidControllerRoll.getPID() * delta;
 
   const int* motorThrusts = motorManager.getThrusts();
+  
+  debugData.motorThrusts[CW_FRONT] = motorThrusts[CW_FRONT];
+  debugData.motorThrusts[CCW_RIGHT] = motorThrusts[CCW_RIGHT];
+  debugData.motorThrusts[CW_BACK] = motorThrusts[CW_BACK];
+  debugData.motorThrusts[CCW_LEFT] = motorThrusts[CCW_LEFT];
 
   motorManager.addMotor(CW_FRONT, -pidPitch - pidRoll);
   motorManager.addMotor(CCW_RIGHT, -pidPitch + pidRoll);
@@ -68,10 +65,8 @@ void loop() {
   
   motorManager.runMotors();
 
-  //wireless.pumpData();
-
-  prevErrorX = errorX;
-  prevErrorY = errorY;
+  wireless.pumpData(&debugData);
+  
   delta = (millis() - startTime) / 1000.0;
 }
 

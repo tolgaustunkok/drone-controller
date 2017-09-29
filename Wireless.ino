@@ -1,13 +1,9 @@
 
-void Wireless::pumpData() {
-  if (data[0] != '\0') {
-    radio.stopListening();
-    int len = strlen(data);
-    radio.write(data, len);
-    radio.startListening();
-    memset(data, 0, 32);
-    index = 0;
-  }
+void Wireless::pumpData(const debug_data_t* debugData) {
+  radio.stopListening();
+  int len = sizeof(*debugData);
+  radio.write(debugData, len);
+  radio.startListening();
 }
 
 void Wireless::initialize() {
@@ -19,9 +15,6 @@ void Wireless::initialize() {
   radio.openReadingPipe(1, READ_PIPE);
   radio.openWritingPipe(WRITE_PIPE);
   radio.startListening();
-  data = new char[32];
-  memset(data, 0, 32);
-  index = 0;
   delay(300);
 }
 
@@ -29,26 +22,5 @@ void Wireless::getMessage(void* otherData, int sizeOfData) {
   if (radio.available()) {
     radio.read(otherData, sizeOfData);
   }
-}
-
-void Wireless::addData(char *otherData) {
-  int lengthOfData = strlen(otherData);
-  if (index + lengthOfData < 32) {
-    strcpy((data + index), otherData);
-    index += lengthOfData;
-    data[index++] = ',';
-  } else {
-    tmpData = new char[lengthOfData + 1];
-    strcpy(tmpData, otherData);
-    pumpData();
-    strcpy((data + index), tmpData);
-    index += lengthOfData;
-    data[index++] = ',';
-    delete[] tmpData;
-  }
-}
-
-Wireless::~Wireless() {
-  delete[] data;
 }
 
