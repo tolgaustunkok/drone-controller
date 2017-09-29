@@ -12,7 +12,7 @@
 Wireless wireless;
 SensorArray sensors;
 MotorManager motorManager;
-CommandInterpreter cmdInterpreter;
+//CommandInterpreter cmdInterpreter;
 PIDController pidControllerRoll;
 PIDController pidControllerPitch;
 debug_data_t debugData;
@@ -38,7 +38,7 @@ void setup() {
 
   motorManager.initialize(8, 7, 6, 5);
 
-  cmdInterpreter.initialize(&wireless, &motorManager, &sensors);
+  //cmdInterpreter.initialize(&wireless, &motorManager, &sensors);
 
   pidControllerRoll.initialize(1.3, 0.04, 15.0);
   pidControllerPitch.initialize(1.3, 0.04, 15.0);
@@ -62,7 +62,7 @@ void loop() {
     accum = 0.0;
   }
   
-  cmdInterpreter.interpret();
+  //cmdInterpreter.interpret();
   sensors.updatePositionData(delta);
 
   debugData.sensorData = sensors.getCurrentAngle();
@@ -89,7 +89,9 @@ void loop() {
   
   motorManager.runMotors();
 
-  wireless.pumpData(&debugData);
+  Serial.println(String(debugData.altitude));
+
+  //wireless.pumpData(&debugData);
 
   accum += delta;
   delta = (millis() - startTime) / 1000.0;
