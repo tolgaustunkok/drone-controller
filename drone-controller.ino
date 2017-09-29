@@ -5,8 +5,9 @@
 #include "CommandInterpreter.h"
 #include "PIDController.h"
 
-#define INIT_LED 4
-#define RUNNING_LED 3 
+#define INIT_LED 4 // RED
+#define INIT_SUCCESS_LED 2 // GREEN
+#define RUNNING_LED 3 // BLUE
 
 Wireless wireless;
 SensorArray sensors;
@@ -19,9 +20,11 @@ debug_data_t debugData;
 void setup() {
   pinMode(INIT_LED, OUTPUT);
   pinMode(RUNNING_LED, OUTPUT);
+  pinMode(INIT_SUCCESS_LED, OUTPUT);
 
   digitalWrite(RUNNING_LED, LOW);
   digitalWrite(INIT_LED, HIGH);
+  digitalWrite(INIT_SUCCESS_LED, LOW);
   
   Serial.begin(9600);
   Wire.begin();
@@ -41,6 +44,7 @@ void setup() {
   pidControllerPitch.initialize(1.3, 0.04, 15.0);
   
   digitalWrite(INIT_LED, LOW);
+  digitalWrite(INIT_SUCCESS_LED, HIGH);
 }
 
 unsigned long startTime;
