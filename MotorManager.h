@@ -12,6 +12,7 @@ typedef enum {
 
 class MotorManager {
   private:
+    const int MAX_THRUST = 1400;
     Servo motors[4];
     int thrusts[4];
   public:
@@ -20,7 +21,7 @@ class MotorManager {
     void setMotor(MOTOR_E motor, int thrust);
     void addMotor(MOTOR_E motor, int thrust);
     void setAllMotors(int thrust);
-    const int* getThrusts();
+    int getThrust(MOTOR_E motor);
 };
 
 #endif

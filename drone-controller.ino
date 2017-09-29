@@ -51,10 +51,11 @@ void loop() {
   float pidPitch = pidControllerPitch.getPID() * delta;
   float pidRoll = pidControllerRoll.getPID() * delta;
 
-  const int* motorThrusts = motorManager.getThrusts();
+  debugData.pidRoll = pidRoll;
+  debugData.pidPitch = pidPitch;
 
   for (int i = 0; i < 4; i++) {
-    debugData.motorThrusts[i] = motorThrusts[i];
+    debugData.motorThrusts[i] = motorManager.getThrust(i);
   }
 
   motorManager.addMotor(CW_FRONT, -pidPitch - pidRoll);

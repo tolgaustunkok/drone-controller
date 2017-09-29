@@ -12,6 +12,8 @@ typedef struct {
   float altitude;
   float temperature;
   int motorThrusts[4];
+  float pidRoll;
+  float pidPitch;
 } debug_data_t;
 
 class Wireless {
