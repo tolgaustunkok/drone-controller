@@ -2,13 +2,7 @@
 #define MOTOR_MANAGER_H
 
 #include <Servo.h>
-
-typedef enum {
-  CW_FRONT = 0,
-  CW_BACK = 1,
-  CCW_LEFT = 2,
-  CCW_RIGHT = 3
-} MOTOR_E;
+#include "Structs.h"
 
 class MotorManager {
   private:

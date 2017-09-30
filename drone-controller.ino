@@ -4,6 +4,7 @@
 #include "Wireless.h"
 #include "CommandInterpreter.h"
 #include "PIDController.h"
+#include "Structs.h"
 
 #define INIT_LED 4 // RED
 #define INIT_SUCCESS_LED 2 // GREEN

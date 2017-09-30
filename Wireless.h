@@ -3,17 +3,7 @@
 
 #include <RF24.h>
 #include <RF24_config.h>
-#include "SensorArray.h"
-
-typedef struct {
-  sensor_data_t sensorData;
-  float altitude;
-  float temperature;
-  int motorThrusts[4];
-  //float pidRoll;
-  //float pidPitch;
-  float delta;
-} debug_data_t;
+#include "Structs.h"
 
 class Wireless {
   private:

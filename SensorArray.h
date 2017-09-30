@@ -3,14 +3,9 @@
 
 #include <Adafruit_BMP280.h>
 #include <MPU9255.h>
+#include "Structs.h"
 
 #define RAD2DEG 57.295779505601
-
-typedef struct {
-  float x;
-  float y;
-  float z;
-} sensor_data_t;
 
 class SensorArray {
 private:
