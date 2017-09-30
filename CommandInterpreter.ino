@@ -10,12 +10,14 @@ void CommandInterpreter::interpret() {
 
   if (message[0] != 0) {
     numOfTokens = count(message, ' ');
+    Serial.println(message);
     
     if (numOfTokens == 1) {
       if (getValue(message, ' ', 0) == "STAT") {
         Serial.println("STAT command received.");
         
       } else if (getValue(message, ' ', 0) == "EXT") {
+        Serial.println("Shutting down...");
         motorManager->setAllMotors(0);
       }
     } else if (numOfTokens == 2) {

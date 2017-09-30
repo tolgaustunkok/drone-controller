@@ -1,8 +1,11 @@
 
 void Wireless::pumpData(const debug_data_t* debugData) {
   radio.stopListening();
+  delay(10);
   radio.write(debugData, sizeof(*debugData));
+  delay(10);
   radio.startListening();
+  delay(20);
 }
 
 void Wireless::initialize() {
@@ -18,6 +21,7 @@ void Wireless::initialize() {
 }
 
 void Wireless::getMessage(void* otherData, int sizeOfData) {
+  delay(20);
   if (radio.available()) {
     radio.read(otherData, sizeOfData);
   }
