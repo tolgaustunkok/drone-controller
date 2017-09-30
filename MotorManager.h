@@ -6,7 +6,7 @@
 
 class MotorManager {
   private:
-    const int MAX_THRUST = 1400;
+    const int MAX_THRUST = 1500;
     Servo motors[4];
     int thrusts[4];
   public:

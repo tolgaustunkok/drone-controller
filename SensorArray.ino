@@ -30,13 +30,13 @@ void SensorArray::updatePositionData(float delta) {
   accelAngle.z = atan(sqrt(pow(accelData.x, 2) + pow(accelData.y, 2)) / accelData.z) * RAD2DEG; // roll
 
   if (initialRun) {
-    initialAngle.x = 0.05 * (currentAngle.x + gyroData.x * delta) + 0.95 * accelAngle.x;
-    initialAngle.y = 0.05 * (currentAngle.y + gyroData.y * delta) + 0.95 * accelAngle.y;
+    initialAngle.x = 0.95 * (currentAngle.x + gyroData.x * delta) + 0.05 * accelAngle.x;
+    initialAngle.y = 0.95 * (currentAngle.y + gyroData.y * delta) + 0.05 * accelAngle.y;
     initialRun = false;
   }
 
-  currentAngle.x = initialAngle.x - (0.02 * (currentAngle.x + gyroData.x * delta) + 0.98 * accelAngle.x);
-  currentAngle.y = initialAngle.y - (0.02 * (currentAngle.y + gyroData.y * delta) + 0.98 * accelAngle.y);
+  currentAngle.x = initialAngle.x - (0.95 * (currentAngle.x + gyroData.x * delta) + 0.05 * accelAngle.x);
+  currentAngle.y = initialAngle.y - (0.95 * (currentAngle.y + gyroData.y * delta) + 0.05 * accelAngle.y);
 
   delay(35);
 }

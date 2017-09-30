@@ -41,8 +41,10 @@ void setup() {
 
   cmdInterpreter.initialize(&wireless, &motorManager, &sensors);
 
-  pidControllerRoll.initialize(1.3, 0.04, 15.0);
-  pidControllerPitch.initialize(1.3, 0.04, 15.0);
+  //pidControllerRoll.initialize(1.3, 0.04, 15.0);
+  //pidControllerPitch.initialize(1.3, 0.04, 15.0);
+  pidControllerRoll.initialize(1.2, 0, 0);
+  pidControllerPitch.initialize(1.2, 0, 0);
   
   digitalWrite(INIT_LED, LOW);
   digitalWrite(INIT_SUCCESS_LED, HIGH);
@@ -73,8 +75,8 @@ void loop() {
   pidControllerPitch.calculatePID(0.0, sensors.getCurrentAngle().y);
   pidControllerRoll.calculatePID(0.0, sensors.getCurrentAngle().x);
   
-  float pidPitch = pidControllerPitch.getPID() * delta;
-  float pidRoll = pidControllerRoll.getPID() * delta;
+  float pidPitch = pidControllerPitch.getPID();
+  float pidRoll = pidControllerRoll.getPID();
 
   //debugData.pidRoll = pidRoll;
   //debugData.pidPitch = pidPitch;
