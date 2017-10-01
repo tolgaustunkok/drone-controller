@@ -34,6 +34,12 @@ void CommandInterpreter::interpret() {
         MOTOR_E motor = getValue(message, ' ', 1).toInt();
         int thrust = getValue(message, ' ', 2).toInt();
         motorManager->setMotor(motor, thrust);
+      } else if (getValue(message, ' ', 0) == "PID") {
+        if (getValue(message, ' ', 1) == "PITCH") {
+          pidPitch->setDesired(getValue(message, ' ', 2).toFloat());
+        } else {
+          pidRoll->setDesired(getValue(message, ' ', 2).toFloat());
+        }
       }
     } else if (numOfTokens == 4) {
       if (getValue(message, ' ', 0) == "PID") {

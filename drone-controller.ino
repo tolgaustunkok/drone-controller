@@ -72,8 +72,8 @@ void loop() {
   debugData.altitude = sensors.getAltitude(1014.5);
   debugData.temperature = sensors.getTemperature();
 
-  pidControllerPitch.calculatePID(0.0, sensors.getCurrentAngle().y);
-  pidControllerRoll.calculatePID(0.0, sensors.getCurrentAngle().x);
+  pidControllerPitch.calculatePID(sensors.getCurrentAngle().y);
+  pidControllerRoll.calculatePID(sensors.getCurrentAngle().x);
   
   float pidPitch = pidControllerPitch.getPID();
   float pidRoll = pidControllerRoll.getPID();
