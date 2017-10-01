@@ -1,8 +1,10 @@
 
-void CommandInterpreter::initialize(const Wireless* w, const MotorManager* m, const SensorArray* s) {
+void CommandInterpreter::initialize(const Wireless* w, const MotorManager* m, const SensorArray* s, const PIDController* pidRoll, const PIDController* pidPitch) {
   wireless = w;
   motorManager = m;
   sensors = s;
+  this->pidRoll = pidRoll;
+  this->pidPitch = pidPitch;
 }
 
 void CommandInterpreter::interpret() {
@@ -32,6 +34,29 @@ void CommandInterpreter::interpret() {
         MOTOR_E motor = getValue(message, ' ', 1).toInt();
         int thrust = getValue(message, ' ', 2).toInt();
         motorManager->setMotor(motor, thrust);
+      }
+    } else if (numOfTokens == 4) {
+      if (getValue(message, ' ', 0) == "PID") {
+        Serial.println("PID command with 3 parameters received.");
+        if (getValue(message, ' ', 2) == "P") {
+          if (getValue(message, ' ', 1) == "PITCH") {
+            pidPitch->setKp(getValue(message, ' ', 3).toFloat());
+          } else {
+            pidRoll->setKp(getValue(message, ' ', 3).toFloat());
+          }
+        } else if (getValue(message, ' ', 2) == "I") {
+          if (getValue(message, ' ', 1) == "PITCH") {
+            pidPitch->setKi(getValue(message, ' ', 3).toFloat());
+          } else {
+            pidRoll->setKi(getValue(message, ' ', 3).toFloat());
+          }
+        } else {
+          if (getValue(message, ' ', 1) == "PITCH") {
+            pidPitch->setKd(getValue(message, ' ', 3).toFloat());
+          } else {
+            pidRoll->setKd(getValue(message, ' ', 3).toFloat());
+          }
+        }
       }
     }
   }

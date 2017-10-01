@@ -39,7 +39,7 @@ void setup() {
 
   motorManager.initialize(8, 7, 6, 5);
 
-  cmdInterpreter.initialize(&wireless, &motorManager, &sensors);
+  cmdInterpreter.initialize(&wireless, &motorManager, &sensors, &pidControllerRoll, &pidControllerPitch);
 
   //pidControllerRoll.initialize(1.3, 0.04, 15.0);
   //pidControllerPitch.initialize(1.3, 0.04, 15.0);
